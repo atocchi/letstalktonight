@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import db from './services/firebase';
 import { Card, Chip } from 'react-native-paper'
 
@@ -22,7 +22,7 @@ const [text, setText] = useState({
 })
 
 const [name, setName] = useState({
-  name: 'rick'
+  name: 'mike'
 })
 
 //Pulls from Firebase to Create in Process Chats 
@@ -31,14 +31,13 @@ useEffect(() =>{
       let chat = [];
       snapshot.forEach((snap) => {
           chat.push(snap.val());
-          setChat({chats: chat.reverse()})
+          setChat({chats: chat})
 })
   }) 
 },[])
 
   function pressHandler() {
     if(text.content === ''){
-      // event.preventDefault();
       alert('You cannot send an empty mesage!');
     }
     else if(name.name === null){
@@ -55,7 +54,6 @@ useEffect(() =>{
         });
         setText({ content: '' });
       } catch (error) {
-        console.log(error)
         setChat({ writeError: error.message });
       }
     }
@@ -63,12 +61,21 @@ useEffect(() =>{
 
   return (
     <View style={styles.container}>
+    <ScrollView style={styles.textBox}>
       <Text>Active Chat is Below!</Text>
-      {chat.chats.map(chat =>
-      <Chip style={style.textMsg}>{chat.name} : {chat.content}</Chip>
+      {chat.chats.map(chat => {
+      if(chat.name === 'rick'){
+      return <Text style={styles.textMsg}>{chat.name} : {chat.content}</Text>
+      }
+      else{
+      return <Text style={styles.textMsg2}>{chat.name} : {chat.content}</Text>
+      }
+      }
       )
       }
+    </ScrollView>
       <TextInput
+      style={{backgroundColor: 'white', width: '75%', marginLeft: '2.5%'}}
       defaultValue={text.content}
       onChangeText={(value) => setText({content: value})}
       />
@@ -80,11 +87,29 @@ useEffect(() =>{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: 'white',
+    alignItems: 'flex-start',
     justifyContent: 'center',
   },
+  textBox : {
+    maxHeight: '65%',
+    width: '100%',
+    backgroundColor: 'grey'
+  },
   textMsg: {
-    marginBottom: '5px',
+    marginBottom: '1.5%',
+    marginLeft: '2.5%',
+    width: '65%',
+    backgroundColor: '#FDFD96',
+    padding: '1.5%',
+    borderRadius: 10
+  },
+  textMsg2: {
+    marginBottom: '1.5%',
+    marginLeft: '30%',
+    width: '65%',
+    backgroundColor: '#AEC6CF',
+    padding: '1.5%',
+    borderRadius: 10
   }
 });
