@@ -61,25 +61,24 @@ useEffect(() =>{
 
   return (
     <View style={styles.container}>
-    <ScrollView style={styles.textBox}>
-      <Text>Active Chat is Below!</Text>
-      {chat.chats.map(chat => {
-      if(chat.name === 'rick'){
-      return <Text style={styles.textMsg}>{chat.name} : {chat.content}</Text>
-      }
-      else{
-      return <Text style={styles.textMsg2}>{chat.name} : {chat.content}</Text>
-      }
-      }
-      )
-      }
-    </ScrollView>
-      <TextInput
-      style={{backgroundColor: 'white', width: '75%', marginLeft: '2.5%'}}
-      defaultValue={text.content}
-      onChangeText={(value) => setText({content: value})}
-      />
-      <Text onPress={pressHandler}>Submit</Text>
+      <ScrollView style={styles.textBox}>
+        {chat.chats.map(chat => {
+          if(chat.name === 'rick'){
+            return <Text style={styles.textMsg}>{chat.name}:     {chat.content}</Text>
+          }
+          else{
+            return <Text style={styles.textMsg2}>{chat.name}:     {chat.content}</Text>
+          }
+         }
+        )}
+      </ScrollView>
+      <View style={styles.inputBox}>
+        <TextInput style={styles.textPut}
+        defaultValue={text.content}
+        onChangeText={(value) => setText({content: value})}
+        />
+        <Text style={styles.sub} onPress={pressHandler}>Submit</Text>
+      </View>
     </View>
   );
 }
@@ -97,7 +96,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey'
   },
   textMsg: {
-    marginBottom: '1.5%',
+    marginBottom: '0.75%',
+    marginTop: '0.75%',
     marginLeft: '2.5%',
     width: '65%',
     backgroundColor: '#FDFD96',
@@ -111,5 +111,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#AEC6CF',
     padding: '1.5%',
     borderRadius: 10
+  },
+  textPut: {
+    backgroundColor: '#d3d3d3', 
+    width: '75%', 
+    marginLeft: '2.5%',
+    marginTop: '1.5%',
+    borderColor: 'black',
+    borderWidth: 1
+  },
+  inputBox : {
+    width: '100%',
+    flexDirection: 'row'
+  },
+  sub: {
+    borderColor: 'black',
+    borderWidth: 1,
+    textAlign: 'center',
+    marginTop: '1.5%',
+    width: '20%',
+    height: '65%',
+    padding: 1
   }
+
 });
