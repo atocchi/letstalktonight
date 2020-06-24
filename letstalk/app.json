@@ -23,6 +23,11 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "android": {
+      "package": "com.toekey.letstalk",
+      "versionCode": 1
+    },
+    "description": "a simple chat app for android"
   }
 }

@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView, Alert,SafeAreaView } from 'react-native';
 import db from './services/firebase';
-import { Card, Chip } from 'react-native-paper'
+import { Card, Chip } from 'react-native-paper';
+import { Barometer } from 'expo-sensors';
 
 export default function App() {
 
@@ -27,9 +28,16 @@ const [text, setText] = useState({
   content: ''
 })
 
+const [pState, setPState] = useState(0)
+
 const [name, setName] = useState({
   name: null
 })
+
+// const subscription = Barometer.addListener(({ pressure, relativeAltitude }) => {
+//   console.log((pressure - 1012.256)* 100);
+//   setPState(pressure )
+// });
 
 
 
@@ -78,6 +86,7 @@ useEffect(() =>{
 
   return (
     <View style={styles.container}>
+      <Text style={styles.nameUI}>{name.name}</Text>
       { 
       modal ?
       <Text></Text>
@@ -93,12 +102,12 @@ useEffect(() =>{
       }
       <ScrollView style={styles.textBox} ref={scrollViewRef}
       onContentSizeChange={(contentWidth, contentHeight)=> {scrollViewRef.current.scrollToEnd({animated: true})}}>
-        {chat.chats.map(chat => {
+        {chat.chats.map((chat)  => {
           if(chat.name !== name.name){
-            return <Text style={styles.textMsg}>{chat.name}:     {chat.content}</Text>
+            return <Text key={chat.timestamp}  style={styles.textMsg}>{chat.name}:     {chat.content}</Text>
           }
           else{
-            return <Text style={styles.textMsg2}>{chat.name}:     {chat.content}</Text>
+            return <Text key={chat.timestamp} style={styles.textMsg2}>{chat.name}:     {chat.content}</Text>
           }
          }
         )}
@@ -132,16 +141,29 @@ const styles = StyleSheet.create({
     marginLeft: '2.5%',
     width: '65%',
     backgroundColor: '#FDFD96',
-    padding: '1.5%',
-    borderRadius: 10
+    padding: '0.75%',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
+    
   },
   textMsg2: {
-    marginBottom: '1.5%',
+    marginBottom: '0.76%',
+    marginTop: '0.75%',
     marginLeft: '30%',
     width: '65%',
     backgroundColor: '#AEC6CF',
-    padding: '1.5%',
-    borderRadius: 10
+    padding: '0.75%',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
+    borderRadius: 10,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 15,
+      height: 35
+    },
+    shadowRadius: 15,
+    shadowOpacity: 1.0
   },
   textPut: {
     backgroundColor: '#d3d3d3', 
@@ -195,6 +217,10 @@ const styles = StyleSheet.create({
   nameText :{
     left: "15%",
     fontSize: 25
+  },
+  nameUI : {
+    width: '95%',
+    textAlign: 'center'
   }
 
 });
